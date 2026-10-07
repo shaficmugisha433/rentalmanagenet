@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS rms CHARACTER SET utf8mb4; USE rms;
+CREATE TABLE users(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(120),email VARCHAR(120) UNIQUE,password VARCHAR(255),role ENUM('admin','tenant') DEFAULT 'tenant');
+CREATE TABLE properties(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(120),room_number VARCHAR(40) NOT NULL,location VARCHAR(160) NOT NULL,type VARCHAR(40),rooms INT,rent DECIMAL(12,0),status VARCHAR(20) DEFAULT 'available',images TEXT,description TEXT);
+CREATE TABLE tenants(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT NULL,name VARCHAR(120),phone VARCHAR(30),email VARCHAR(120),property_id INT NULL,status VARCHAR(20) DEFAULT 'active');
+CREATE TABLE leases(id INT AUTO_INCREMENT PRIMARY KEY,tenant_id INT,property_id INT,start DATE,end DATE,rent DECIMAL(12,0),deposit DECIMAL(12,0));
+CREATE TABLE bookings(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,tenant_name VARCHAR(120),property_id INT,move_in DATE,status VARCHAR(20) DEFAULT 'pending');
+CREATE TABLE payments(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT NULL,tenant_id INT NULL,tenant_name VARCHAR(120),property_id INT,amount DECIMAL(12,0),method VARCHAR(40),payer_number VARCHAR(30),ref VARCHAR(80),date DATE,status VARCHAR(20) DEFAULT 'pending');
+CREATE TABLE bank_accounts(id INT AUTO_INCREMENT PRIMARY KEY,bank VARCHAR(80),account_name VARCHAR(120),account_no VARCHAR(40),balance DECIMAL(14,0));
+CREATE TABLE mobile_money(id INT AUTO_INCREMENT PRIMARY KEY,provider VARCHAR(40),number VARCHAR(30),name VARCHAR(120));
+CREATE TABLE maintenance(id INT AUTO_INCREMENT PRIMARY KEY,property_id INT,issue VARCHAR(200),status VARCHAR(20) DEFAULT 'open',cost DECIMAL(12,0) DEFAULT 0);
+CREATE TABLE complaints(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,tenant_name VARCHAR(120),subject VARCHAR(160),message TEXT,status VARCHAR(20) DEFAULT 'open',date DATE);
